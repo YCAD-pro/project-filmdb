@@ -1,10 +1,22 @@
 import express, { raw } from "express";
+import { webStatFilm } from "./web/webStat";
 import {
-  findFilmByIdActeur,
-  getFilmAnneeStat,
-  getFilmGenreStat,
-  getFilmNoteStat,
-} from "./db/Dbsync";
+  webActeurById,
+  webActeurByQuery,
+  webAddActeur,
+  webAllActeur,
+} from "./web/webActeur";
+import {
+  webExemple,
+  webAllFilms,
+  webFilmById,
+  webFilmByTitre,
+  webFilmByCriteres,
+  webAddFilm,
+  webDeleteFilm,
+  webUpdateFilm,
+  webFilmByActeurId,
+} from "./web/webFilm";
 const app = express();
 app.use(express.static("public"));
 app.use(express.json());
@@ -24,103 +36,30 @@ app
   });
 
 // ==========================> Routes Film <==========================
-app.get("/exempleDeFilm", (req, res) => {
-  const filmDefault = {
-    titre: "",
-    annee: 2000,
-    genre: "",
-    synopsis: "",
-    acteurs: [],
-    note: 20,
-    url: "MyMAC/user/content/title.mp4",
-  };
-  res.json(filmDefault);
-});
+app.get("/exempleDeFilm", webExemple);
 
-app.get("/films", async (req, res) => {
-  const listFilm = await db.getFilms();
-  res.json(listFilm);
-});
+app.get("/films", webAllFilms);
 
-app.get("/film/:id", async (req, res) => {
-  const idFilm = req.params.id;
-  const filmFounded = await db.getFilmById(idFilm);
-  return res.json(filmFounded);
-});
+app.get("/film/:id", webFilmById);
 
-app.get("/filmByTitre/:name", async (req, res) => {
-  const titreFilm = req.params.name;
-  const filmFounded = await db.getFilmByTitre(titreFilm);
-  return res.json(filmFounded);
-});
+app.get("/filmByTitre/:name", webFilmByTitre);
 
-app.get("/films/filtre", (req, res) => {
-  // Les films correspondant a 1 critere (ex: nom, annee, genre, ...)
-  const criteres = req.query;
-  // TODO Faire une requete suivant criteres
-  res.send(criteres);
-});
+app.get("/films/filtre", webFilmByCriteres);
 
-app.post("/film", async (req, res) => {
-  const filmToAdd = req.body;
-  console.log("filmToAdd", filmToAdd);
-  const filmAdded = await db.setFilm(filmToAdd);
-  res.json(filmAdded);
-});
+app.post("/film", webAddFilm);
 
-app.delete("/film/:id", async (req, res) => {
-  const idFilmToRemove = req.params.id;
-  const removedFilm = await db.deleteFilmById(idFilmToRemove);
-  res.json(removedFilm);
-});
+app.delete("/film/:id", webDeleteFilm);
 
-app.put("/film/:id", async (req, res) => {
-  const idToUpdate = req.params.id;
-  const partsToUpdate = req.body;
-  const filmUpdated = await db.updateFilm(idToUpdate, partsToUpdate);
-  res.json(filmUpdated);
-});
+app.put("/film/:id", webUpdateFilm);
 
-// Statistique sur la collection de films
-app.get("/statsFilms/:stats", async (req, res) => {
-  const askedStats = req.params.stats;
-  if (askedStats === "genre") {
-    return res.json(await getFilmGenreStat());
-  } else if (askedStats === "annee") {
-    return res.json(await getFilmAnneeStat());
-  } else if (askedStats === "note") {
-    return res.json(await getFilmNoteStat());
-  } else {
-    return res.send("FILTRE NON VALIDE");
-  }
-});
+app.get("/statsFilms/:stats", webStatFilm);
 
-app.get("/filmsByActeurId/:acteur", async (req, res) => {
-  const acteurId = req.params.acteur;
-  const listFilmWithThisActeur = await findFilmByIdActeur(acteurId);
-  res.json(listFilmWithThisActeur);
-});
+app.get("/filmsByActeurId/:acteur", webFilmByActeurId);
 
-app.get("/acteurs", async (req, res) => {
-  const acteurs = await db.getActeurs();
-  res.json(acteurs);
-});
+app.get("/acteurs", webAllActeur);
 
-app.get("/acteur/:id", async (req, res) => {
-  const idActeurs = req.params.id;
-  const acteur = await db.getActeurById(idActeurs);
-  res.json(acteur);
-});
+app.get("/acteur/:id", webActeurById);
 
-app.post("/acteur", async (req, res) => {
-  const acteur = req.body;
-  const acteurAdded = await db.setActeur(acteur);
-  res.json(acteurAdded);
-});
+app.post("/acteur", webAddActeur);
 
-app.get("/acteurByQuery", async (req, res) => {
-  const { nom, prenom } = req.query;
-  const result = await db.checkAndReturnIdActeur(nom, prenom);
-  // console.log(`recherche de nom=${nom} et prenom=${prenom}`);
-  res.json(result);
-});
+app.get("/acteurByQuery", webActeurByQuery);

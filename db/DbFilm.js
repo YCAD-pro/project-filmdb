@@ -1,4 +1,6 @@
 import { getActeurParIdFilm } from "./Dbsync";
+import sqliteSync from "sqlite-sync";
+const db = sqliteSync.connect("./filmSync.db");
 
 // ==========================> FILMS <==========================
 async function getFilms() {
