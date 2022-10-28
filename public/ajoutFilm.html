@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Film</title>
+</head>
+<body>
+<form id="filmForm" action="/film" method="post">
+  <label for="titre_film">Titre</label>
+  <input type="text" name="titre_film" id="titre_film">
+  <input type="submit" value="Valider" onclick="postForm">
+</form>
+<script>
+  const valid = document.getElementById('filmForm')
+  valid.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const titre = document.querySelector('#titre_film')
+    console.log(titre)
+      fetch("/login", (e) => {
+          e.respondWith(new Response(myBody, {
+              headers: { "Content-Type" : "text/plain" },
+              method: "POST",
+              body: {
+                  "titre_film": "titre-test"
+              }
+          })
+      )
+  }})
+</script>
+</body>
+</html>

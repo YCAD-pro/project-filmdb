@@ -5,13 +5,18 @@
     <title>Y.CADET API - DB film</title>
 </head>
 <body>
-<h1>Welcome</h1>
-<p>La liste des liens</p>
+<h1>API - Mes films piratés que je partage sur ma machine 😆</h1>
+<p>La liste des URLs :</p>
 <ul>
-    <li><a href="/films">Lister les films</a></li>
-    <li><a href="/exempleDeFilm">Exemple de film</a></li>
-    <li><a href="/film/2">Recuperer film par ID</a></li>
-    <li><a href="/acteurs">Recuperer la liste des acteurs</a></li>
+    <li><a href="/films">Lister les films</a> /films</li>
+    <li><a href="/exempleDeFilm">Exemple de film</a> /exempleDeFilm</li>
+    <li><a href="/film/2">Recuperer film par ID</a> exemple /film/2</li>
+    <li><a href="/filmByTitre/matrix">Recuperer film par titre</a> exemple /film/matrix</li>
+    <li><a href="/acteurs">Recuperer la liste des acteurs</a> /acteurs</li>
+    <li><a href="/acteur/2">Recuperer acteurs par Id</a> /acteur/:id</li>
+    <li><a href="/acteurByQuery?nom=SIMPSON&prenom=Homer">Recuperer acteurs par Query</a> /acteurByQuery?nom=NOM&prenom=PRENOM</li>
+    <li><a href="/filmsByActeurId/7">Recuperer la liste des films par acteur id</a> /filmsByActeurId/:idActeur</li>
+    <li><a href="/statsFilms/genre">Recuperer le nombre de film par genre</a> /statsFilms/:stats peux etre : genre, type ou annee</li>
 </ul>
 </body>
 </html>
